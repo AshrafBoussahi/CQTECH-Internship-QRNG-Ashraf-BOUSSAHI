@@ -1,0 +1,125 @@
+let's analyze the effectiveness of these results in terms of the nature of the input. We can review the results of most of the studies, as they considered the bits of the inputs were chosen independently.
+
+\section{Classical VN with Independent Input}
+
+Let's consider the input string \( x_1, x_2, \dots, x_i, \dots, x_m \) follows an independent distribution, where each \( x_i \) bit is chosen independently from the others and with a uniform bias (the probability of getting a 0 or 1 is fixed and not necessarily equal between them, but follows the same distribution).
+
+Let the probability of \( x_i \) being 1 be \( p \), and the probability of \( x_i \) being 0 be \( q = 1 - p \), where \( p \) is unknown but satisfies \( 0 < p < 1 \).
+
+
+Let's define the following set of events in terms of the output after post-processing a pair of bits:
+
+\begin{enumerate}
+    \item The generated output is a non-null output:
+    \begin{itemize}
+        \item The output is 0: The two input bits, according to the mapping, should be 01, where the first bit is 0 (with probability \( p \)) and the second bit is 1 (with probability \( q = 1 - p \)). Since these two events are independent, the probability for this output is
+        \begin{equation}
+        P(\text{Output is 0}) = p \cdot q = p \cdot (1 - p)
+        \end{equation}
+        \item The output is 1: The two input bits, according to the mapping, should be 10, where the first bit is 1 (with probability \( 1 - p \)) and the second bit is 0 (with probability \( p \)). Since these two events are independent, the probability for this output is
+        \begin{equation}
+        P(\text{Output is 1}) = q \cdot p = (1 - p) \cdot p = p \cdot (1 - p)
+        \end{equation}
+    \end{itemize}
+    Thus, to generate a non-null output:
+    \begin{equation}
+    P(\text{Output is not null}) = P(\text{Output is 0}) + P(\text{Output is 1}) = 2p(1 - p)
+    \end{equation}
+
+    \item The generated output is a null output (the pair is discarded):  
+    This event can be easily defined as:
+    \begin{equation}
+    P(\text{Output is null}) = 1 - P(\text{Output is not null})
+    \end{equation}
+\end{enumerate}
+
+
+Thus, to generate a non-null output:
+\begin{equation}
+P(\text{Output is not null}) = P(\text{Output is 0}) + P(\text{Output is 1}) = 2p(1 - p)
+\end{equation}
+
+In order to deduce that the output is unbiased, we need to confirm that the probability of having 0 in the output is the same as the probability of having 1.
+
+From the events described above, we have 
+\begin{equation}
+P(\text{Output is 1}) = p(1-p) = k \quad \text{and} \quad P(\text{Output is 0}) = p(1-p) = k
+\end{equation}
+Thus,
+\begin{equation}
+P(\text{Output is 1}) = P(\text{Output is 0}) = k
+\end{equation}
+where \( 0 < k < 1 \). Therefore, the probability of having 0 in the output is the same as the probability of having 1, which allows us to conclude that the results of the classical Von Neumann post-processing with independent and uniformly biased input are unbiased.
+
+\section{Classical VN with Dependent Input}
+
+First, let's define an input with dependent elements. A bitstring can be considered dependent when the probability of a bit being either \( 0 \) or \( 1 \) relies on the bit before it. We can model this dependency using conditional probabilities as follows:  
+
+1. **The \( x_{i+1} \) bit is the same as the \( x_i \):**  
+   \begin{equation}
+   P(x_{i+1} = x_i) = P(x_{i+1} = 0 \,|\, x_i = 0) = P(x_{i+1} = 1 \,|\, x_i = 1) = \lambda
+   \end{equation}  
+
+2. **The \( x_{i+1} \) bit is the inverse of the previous bit:**  
+   \begin{equation}
+   P(x_{i+1} \neq x_i) = P(x_{i+1} = 0 \,|\, x_i = 1) = P(x_{i+1} = 1 \,|\, x_i = 0) = 1 - \lambda
+   \end{equation}  
+
+Here, \( \lambda \) represents the degree of correlation, and \( \lambda \neq 0.5 \) (dependent case).  
+
+If we follow the same pattern as we did with independent elements to prove the unbiasedness of the results of the Von Neumann post-processing method, let’s redefine the previous set of events, assuming that each bit can be \( 0 \) with probability \( p \) and \( 1 \) with probability \( q = 1 - p \). \\ 
+
+
+\noindent So To generate a non-null output: \\ 
+
+1. \textbf{The output of the post-processor is \( 0 \):}  
+The input pair of bits should be \( 01 \). Using the formula for conditional probability:  
+   \begin{equation}
+   P(\text{Output} = 0) = P(x_i = 0 \cap x_{i+1} = 1) = P(x_{i+1} = 1 \,|\, x_i = 0) \cdot P(x_i = 0)
+   \end{equation}  
+   Substituting from the correlation model:  
+   \(
+   P(x_{i+1} = 1 \,|\, x_i = 0) = 1 - \lambda
+   \)
+   So:  
+   \begin{equation}
+   P(\text{Output} = 0) = (1 - \lambda) \cdot p \dots (1)
+   \end{equation}  
+
+2. \textbf{The output of the post-processor is \( 1 \):}
+   The input pair of bits should be \( 10 \). The probability of the first bit being \( 1 \) is \( q = 1 - p \), and the second bit being \( 0 \) is \( P(x_{i+1} = 0 \,|\, x_i = 1) \). Using the same formula:  
+   \begin{equation}
+   P(\text{Output} = 1) = P(x_i = 1 \cap x_{i+1} = 0) = P(x_{i+1} = 0 \,|\, x_i = 1) \cdot P(x_i = 1)
+   \end{equation}  
+   Substituting from the correlation model:  
+   \(
+   P(x_{i+1} = 0 \,|\, x_i = 1) = 1 - \lambda
+   \)  
+   So:  
+   \begin{equation}
+   P(\text{Output} = 1) = (1-\lambda) \cdot (1 - p) = (1-\lambda) \cdot q  \dots (2)
+   \end{equation}
+   
+
+
+   For the output to be unbiased, the probabilities of \( 0 \) and \( 1 \) must be equal:  
+   \begin{equation}
+   P(\text{Output} = 0) = P(\text{Output} = 1)
+   \end{equation}  
+   Substituting from \( (1)  and  (2): \) 
+   \begin{equation}
+   (1 - \lambda) \cdot p = (1-\lambda) \cdot (1 - p)
+   \end{equation}  
+   Simplifying:  
+   \begin{equation}
+   (1- \lambda) \cdot (2p-1) = 0
+   \end{equation}  
+   
+   So:  
+   \[
+   p = 0.5
+   \]  
+
+For the Von Neumann Post-Processor to produce unbiased results, the input must be uniformly distributed and unbiased. However, this contradicts the initial assumption of the input being dependent and uniformly biased as outlined in the study. Therefore, with dependent input, the output of the Von Neumann Post-Processor is \textbf{biased}.
+
+\section{Codes and algoirthms}
