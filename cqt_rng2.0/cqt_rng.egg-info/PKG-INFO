@@ -1,0 +1,18 @@
+Metadata-Version: 2.1
+Name: cqt-rng2
+Version: 1.0.1
+Summary: A small package to generate random numbers using quantum entropy sources.
+Home-page: UNKNOWN
+Author: 
+Author-email: 
+License: UNKNOWN
+Keywords: rng,quantum
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Operating System :: OS Independent
+License-File: LICENSE
+
+UNKNOWN
+

@@ -1,0 +1,8 @@
+qiskit
+thewalrus
+strawberryfields
+numpy
+scipy
+matplotlib
+pennylane
+pennylane-sf
